@@ -4,8 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth/auth.service';
 import { CommonModule } from '@angular/common';
-import { User } from '../../models/user.model';
 import { Subscription } from 'rxjs';
+import { User } from '../../models/user.model';
 
 @Component({
   selector: 'app-header',
@@ -15,7 +15,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  user?: User;
+  user!: User | null;
   userSubscription!: Subscription;
 
   constructor(private authService: AuthService, private router: Router) {}

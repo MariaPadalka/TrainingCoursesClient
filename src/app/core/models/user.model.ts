@@ -1,10 +1,10 @@
-export class User {
-  id: number;
-  email: string;
-  role: string;
+import { RoleType } from '../types/role.type';
 
-  constructor(id: number, email: string, role: string) {
-    this.id = id;
+export class User {
+  email: string;
+  role: RoleType;
+
+  constructor(email: string, role: RoleType) {
     this.email = email;
     this.role = role;
   }

@@ -1,0 +1,36 @@
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>Filter by group</mat-label>
+    <input matInput [formControl]="groupFilter" placeholder="Ex. Group ID" />
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Filter by subject</mat-label>
+    <input matInput [formControl]="subjectFilter" placeholder="Ex. Subject" />
+  </mat-form-field>
+  <table mat-table [dataSource]="filteredLoads" class="mat-elevation-z8">
+    <ng-container matColumnDef="group">
+      <th mat-header-cell *matHeaderCellDef>Group</th>
+      <td mat-cell *matCellDef="let element">{{ element.group.specialty }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="subject">
+      <th mat-header-cell *matHeaderCellDef>Subject</th>
+      <td mat-cell *matCellDef="let element">
+        {{ element.subject.subjectName }}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="lessonType">
+      <th mat-header-cell *matHeaderCellDef>Lesson Type</th>
+      <td mat-cell *matCellDef="let element">{{ element.lessonType }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="hours">
+      <th mat-header-cell *matHeaderCellDef>Hours</th>
+      <td mat-cell *matCellDef="let element">{{ element.hours }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>

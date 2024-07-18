@@ -15,6 +15,7 @@ import { AuthService } from '../../../core/services/auth/auth.service';
 import { Router } from '@angular/router';
 import { HeaderComponent } from '../../../core/components/header/header.component';
 import { MatIconModule } from '@angular/material/icon';
+import { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -60,9 +61,8 @@ export class LoginComponent implements OnInit {
       const { email, password } = this.form.value;
       this.authService.login(email, password).subscribe({
         next: (response) => {
-          console.log('Login successful', response);
-          this.authService.saveToken(response.token);
-          this.authService.saveUser(response.user);
+          this.authService.saveToken(response.accessToken);
+          this.authService.saveUser(new User(email, response.role));
           this.router.navigate(['/']);
         },
         error: (error) => {

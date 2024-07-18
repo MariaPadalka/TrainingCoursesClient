@@ -4,6 +4,7 @@ import { HomeComponent } from '../../../shared/home/home.component';
 import { AdminDashboardComponent } from '../../components/admin/admin-dashboard/admin-dashboard.component';
 import { TeacherDashboardComponent } from '../../components/teacher/teacher-dashboard/teacher-dashboard.component';
 import { CommonModule } from '@angular/common';
+import { RoleType } from '../../../core/types/role.type';
 
 @Component({
   standalone: true,
@@ -18,11 +19,11 @@ import { CommonModule } from '@angular/common';
   ],
 })
 export class DashboardComponent implements OnInit {
-  userRole!: string;
+  userRole!: RoleType | undefined;
 
   constructor(private authService: AuthService) {}
 
   ngOnInit(): void {
-    this.userRole = this.authService.getUserRole();
+    this.userRole = this.authService.getUser()?.role;
   }
 }

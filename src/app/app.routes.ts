@@ -10,7 +10,7 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: DashboardComponent, // Route to DashboardComponent on '/'
-    pathMatch: 'full', // Ensure full path match for root
+    component: DashboardComponent,
+    pathMatch: 'full',
   },
 ];
