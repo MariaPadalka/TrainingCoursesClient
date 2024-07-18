@@ -1,0 +1,6 @@
+@import "../styles/colors.scss";
+
+.content {
+  height: 100%;
+  background: linear-gradient(120deg, $primary-color, $secondary-color);
+}
