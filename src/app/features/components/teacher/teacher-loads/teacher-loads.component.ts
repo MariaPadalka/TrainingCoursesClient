@@ -1,46 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort, Sort } from '@angular/material/sort';
+import { TeacherService } from '../../../../core/services/teacher/teacher.service';
 import { LoadService } from '../../../../core/services/load/load.service';
 import { Load } from '../../../../core/models/load.model';
-import { CommonModule } from '@angular/common';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatTableModule } from '@angular/material/table';
-import { TeacherService } from '../../../../core/services/teacher/teacher.service';
 import { Teacher } from '../../../../core/models/teacher.model';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { GroupDetailDialogComponent } from '../group-detail-dialog/group-detail-dialog.component';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   standalone: true,
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
-  ],
   selector: 'app-teacher-loads',
   templateUrl: './teacher-loads.component.html',
   styleUrls: ['./teacher-loads.component.scss'],
+  imports: [
+    MatTableModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatDialogModule,
+    MatIconModule,
+  ],
 })
 export class TeacherLoadsComponent implements OnInit {
+  displayedColumns: string[] = [
+    'subject',
+    'group',
+    'lessonType',
+    'hours',
+    'paymentPerHour',
+    'totalPayment',
+  ];
+  dataSource = new MatTableDataSource<Load>([]);
   teacher!: Teacher;
-  loads: Load[] = [];
-  filteredLoads: Load[] = [];
-  displayedColumns: string[] = ['group', 'subject', 'lessonType', 'hours'];
 
-  groupFilter = new FormControl('');
-  subjectFilter = new FormControl('');
+  @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
+    private teacherService: TeacherService,
     private loadService: LoadService,
-    private teacherService: TeacherService
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
     this.setTeacher();
-
-    this.groupFilter.valueChanges.subscribe(() => this.applyFilters());
-    this.subjectFilter.valueChanges.subscribe(() => this.applyFilters());
   }
 
   setTeacher(): void {
@@ -60,8 +70,9 @@ export class TeacherLoadsComponent implements OnInit {
   setTeacherLoads(): void {
     this.loadService.getTeachersLoads().subscribe({
       next: (data: Load[]) => {
-        this.loads = data;
-        this.filteredLoads = data;
+        this.dataSource.data = data;
+        this.dataSource.sort = this.sort;
+        console.log(data);
       },
       error: (err: Error) => {
         console.error('Failed to fetch loads', err);
@@ -69,14 +80,23 @@ export class TeacherLoadsComponent implements OnInit {
     });
   }
 
-  applyFilters(): void {
-    const groupFilterValue = this.groupFilter.value?.toLowerCase() || '';
-    const subjectFilterValue = this.subjectFilter.value?.toLowerCase() || '';
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
 
-    this.filteredLoads = this.loads.filter(
-      (load) =>
-        load.group.specialty.toLowerCase().includes(groupFilterValue) &&
-        load.subject.subjectName.toLowerCase().includes(subjectFilterValue)
-    );
+  announceSortChange(sortState: Sort) {
+    if (sortState.direction) {
+      console.log(`Sorted ${sortState.direction}ending`);
+    } else {
+      console.log('Sorting cleared');
+    }
+  }
+
+  openGroupDetailDialog(group: any): void {
+    this.dialog.open(GroupDetailDialogComponent, {
+      width: '300px',
+      data: group,
+    });
   }
 }

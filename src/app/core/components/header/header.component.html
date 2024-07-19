@@ -1,6 +1,6 @@
 <mat-toolbar color="primary" class="header-toolbar">
-  <span>Course management system</span>
-  <span *ngIf="user">, {{ user.email }}</span>
+  <span *ngIf="!user">Course management system</span>
+  <span *ngIf="user">Welcome, {{ user.email }}</span>
   <span class="spacer"></span>
   <nav>
     <a mat-button routerLink="/" *ngIf="!user">Home</a>

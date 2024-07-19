@@ -30,15 +30,27 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, {
-      email,
-      password,
-    });
+    return this.http.post<AuthResponse>(
+      `${this.apiUrl}/auth/login`,
+      {
+        email,
+        password,
+      },
+      {
+        withCredentials: true,
+      }
+    );
   }
 
   refreshToken(): Observable<string> {
     return this.http
-      .post<{ accessToken: string }>(`${this.apiUrl}/auth/refresh`, {})
+      .post<{ accessToken: string }>(
+        `${this.apiUrl}/auth/refresh`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
       .pipe(map((response: { accessToken: string }) => response.accessToken));
   }
 
@@ -68,5 +80,12 @@ export class AuthService {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
     this.userSubject.next(null);
+    this.http.post<{ accessToken: string }>(
+      `${this.apiUrl}/auth/logout`,
+      {},
+      {
+        withCredentials: true,
+      }
+    );
   }
 }

@@ -1,7 +1,19 @@
-table {
-  width: 100%;
-}
+.table-container {
+  width: 80%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center; // Вирівнює контейнер по центру по горизонталі
+  justify-content: center; // Вирівнює контейнер по центру по вертикалі
+  margin: 0 auto; // Центрує контейнер по горизонталі
 
-.mat-form-field {
-  width: 100%;
+  mat-label {
+    margin: 16px;
+    font-size: 1.2em;
+  }
+
+  table {
+    width: 100%; // Забезпечує, що таблиця займає всю ширину контейнера
+    padding: 5px;
+  }
 }

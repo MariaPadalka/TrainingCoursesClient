@@ -41,10 +41,16 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   intercept(
     req: HttpRequest<any>,
@@ -63,29 +69,32 @@ export class AuthInterceptor implements HttpInterceptor {
 
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
-          console.log('401 error happened !!!!');
+        if (error.status === 401 && !error.url?.includes('/auth')) {
           return this.handle401Error(authReq, next);
         }
-        return throwError(error);
+        return throwError(() => error);
       })
     );
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
     return this.authService.refreshToken().pipe(
-      switchMap((token: string) => {
-        this.authService.saveToken(token);
+      switchMap((accessToken: string) => {
+        this.authService.saveToken(accessToken);
         const clonedRequest = request.clone({
           setHeaders: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${accessToken}`,
           },
         });
         return next.handle(clonedRequest);
       }),
-      catchError((error) => {
+      catchError((error: HttpErrorResponse) => {
         this.authService.logout();
-        return throwError(error);
+        this.snackBar.open('Token expired. Please login.', 'Close', {
+          duration: 3000,
+        });
+        this.router.navigate(['/login']);
+        return throwError(() => error);
       })
     );
   }
