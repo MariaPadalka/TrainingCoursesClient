@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './features/pages/login/login.component';
-import { DashboardComponent } from './features/pages/dashboard/dashboard.component';
+import { LoginComponent } from './features/pages/common/login/login.component';
+import { DashboardComponent } from './features/pages/common/dashboard/dashboard.component';
+import { SettingsComponent } from './features/pages/common/settings/settings.component';
 
 export const routes: Routes = [
   {
@@ -13,4 +14,5 @@ export const routes: Routes = [
     component: DashboardComponent,
     pathMatch: 'full',
   },
+  { path: 'settings', component: SettingsComponent }, // Додаємо маршрут до нового компонента
 ];

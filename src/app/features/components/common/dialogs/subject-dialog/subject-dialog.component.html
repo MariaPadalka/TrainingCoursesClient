@@ -1,0 +1,101 @@
+<!-- <p>{{ data.subject ? "Edit Subject" : "Add Subject" }}</p>
+<form [formGroup]="subjectForm">
+  <mat-form-field>
+    <mat-label>Subject Name</mat-label>
+    <input matInput formControlName="subjectName" placeholder="Subject Name" />
+    <mat-error *ngIf="subjectForm.get('subjectName')?.hasError('required')">
+      Subject name is required
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Hourly rate (practice)</mat-label>
+    <input
+      matInput
+      formControlName="hourlyRatePractice"
+      placeholder="Hourly Rate (Practice)"
+      type="number"
+    />
+    <mat-error
+      *ngIf="subjectForm.get('hourlyRatePractice')?.hasError('required')"
+    >
+      Hourly rate (practice) is required
+    </mat-error>
+    <mat-error *ngIf="subjectForm.get('hourlyRatePractice')?.hasError('min')">
+      Hourly rate (practice) must be at least 0
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Hourly rate (lecture)</mat-label>
+    <input
+      matInput
+      formControlName="hourlyRateLecture"
+      placeholder="Hourly Rate (Lecture)"
+      type="number"
+    />
+    <mat-error
+      *ngIf="subjectForm.get('hourlyRateLecture')?.hasError('required')"
+    >
+      Hourly rate (lecture) is required
+    </mat-error>
+    <mat-error *ngIf="subjectForm.get('hourlyRatePractice')?.hasError('min')">
+      Hourly rate (lecture) must be at least 0
+    </mat-error>
+  </mat-form-field>
+</form>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onSaveClick()">Save</button>
+</div> -->
+
+<h2 mat-dialog-title>{{ data.subject ? "Edit Subject" : "Add Subject" }}</h2>
+<mat-dialog-content [formGroup]="subjectForm" class="dialog-form">
+  <mat-form-field appearance="fill">
+    <mat-label>Subject Name</mat-label>
+    <input matInput formControlName="subjectName" placeholder="Subject Name" />
+    <mat-error *ngIf="subjectForm.get('subjectName')?.hasError('required')">
+      Subject name is required
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Hourly rate (practice)</mat-label>
+    <input
+      matInput
+      formControlName="hourlyRatePractice"
+      placeholder="Hourly Rate (Practice)"
+      type="number"
+    />
+    <mat-error
+      *ngIf="subjectForm.get('hourlyRatePractice')?.hasError('required')"
+    >
+      Hourly rate (practice) is required
+    </mat-error>
+    <mat-error *ngIf="subjectForm.get('hourlyRatePractice')?.hasError('min')">
+      Hourly rate (practice) must be at least 0
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Hourly rate (lecture)</mat-label>
+    <input
+      matInput
+      formControlName="hourlyRateLecture"
+      placeholder="Hourly Rate (Lecture)"
+      type="number"
+    />
+    <mat-error
+      *ngIf="subjectForm.get('hourlyRateLecture')?.hasError('required')"
+    >
+      Hourly rate (lecture) is required
+    </mat-error>
+    <mat-error *ngIf="subjectForm.get('hourlyRateLecture')?.hasError('min')">
+      Hourly rate (lecture) must be at least 0
+    </mat-error>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [disabled]="!subjectForm.valid" (click)="onSaveClick()">
+    Save
+  </button>
+</mat-dialog-actions>

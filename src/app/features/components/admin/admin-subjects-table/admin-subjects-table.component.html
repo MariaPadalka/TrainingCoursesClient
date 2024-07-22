@@ -1,0 +1,87 @@
+<div class="component-container">
+  <div class="spinner-container" *ngIf="isLoading">
+    <mat-progress-spinner
+      mode="indeterminate"
+      color="primary"
+    ></mat-progress-spinner>
+  </div>
+
+  <div class="table-container" [ngClass]="{ hidden: isLoading }">
+    <div class="flex-container">
+      <h2>Subjects</h2>
+      <button mat-raised-button color="primary" (click)="openSubjectDialog()">
+        Add New Subject
+      </button>
+    </div>
+
+    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+      <ng-container matColumnDef="subjectName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Subject Name</th>
+        <td data-label="Subject" mat-cell *matCellDef="let subject">
+          {{ subject.subjectName }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hourlyRatePractice">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          id="hourlyRatePractice"
+        >
+          Hourly Rate (Practice)
+        </th>
+        <td mat-cell data-label="Practice Payment" *matCellDef="let subject">
+          {{ subject.hourlyRatePractice }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="hourlyRateLecture">
+        <th
+          mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          id="hourlyRateLecture"
+        >
+          Hourly Rate (Lecture)
+        </th>
+        <td data-label="Lecture payment" mat-cell *matCellDef="let subject">
+          {{ subject.hourlyRateLecture }}
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td
+          class="bigger-height"
+          data-label="Actions"
+          mat-cell
+          *matCellDef="let subject"
+        >
+          <button
+            class="action-btn"
+            mat-icon-button
+            (click)="openSubjectDialog(subject)"
+          >
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button
+            class="action-btn"
+            mat-icon-button
+            (click)="openDeleteDialog(subject._id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr
+        class="not-for-mobile"
+        mat-header-row
+        *matHeaderRowDef="displayedColumns"
+      ></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[2, 5, 10, 25]"></mat-paginator>
+  </div>
+</div>

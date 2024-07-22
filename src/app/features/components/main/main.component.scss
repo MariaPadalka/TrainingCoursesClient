@@ -1,0 +1,146 @@
+@import "../../../../styles/colors.scss";
+
+.content {
+  padding: 30px 15px 30px 15px;
+  min-height: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  background-color: aqua;
+  height: fit-content;
+}
+main {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  background: linear-gradient(120deg, $primary-color, $secondary-color);
+  overflow-y: auto;
+}
+.page-container {
+  width: 340px;
+  height: 100%;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+}
+
+@media screen and (max-width: 760px) {
+  .title {
+    font-size: 16px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .title {
+    display: none;
+  }
+}
+
+.header-toolbar {
+  height: 10vh;
+  border: 1px solid grey;
+  max-height: 80px;
+  min-height: 50px;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.hamburger-button {
+  display: none;
+}
+
+.title {
+  flex: 1;
+}
+
+.nav-buttons {
+  display: flex;
+  align-items: center;
+}
+
+@media screen and (max-width: 460px) {
+  .title {
+    display: none;
+  }
+  .hamburger-button {
+    display: block;
+  }
+  .nav-buttons {
+    display: none;
+  }
+}
+
+.sidenav-container {
+  height: 100%;
+  mat-sidenav {
+    max-width: 50vw;
+    nav {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+}
+
+.sidenav {
+  width: 250px;
+}
+
+app-header,
+.content,
+app-footer {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+@media (min-width: 350px) {
+  app-header,
+  .content,
+  app-footer {
+    width: 345px;
+    margin: 0 auto;
+  }
+  .page-container {
+    width: 340px;
+  }
+}
+
+@media (min-width: 576px) {
+  app-header,
+  .content,
+  app-footer {
+    width: 540px;
+    margin: 0 auto;
+  }
+  .page-container {
+    width: 470px;
+  }
+}
+
+@media (min-width: 768px) {
+  app-header,
+  .content,
+  app-footer {
+    width: 720px;
+  }
+  .page-container {
+    width: 670px;
+  }
+}
+
+@media (min-width: 992px) {
+  app-header,
+  .content,
+  app-footer {
+    width: 960px;
+  }
+  .page-container {
+    width: 800px;
+  }
+}

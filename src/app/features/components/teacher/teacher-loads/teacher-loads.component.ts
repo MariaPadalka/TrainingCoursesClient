@@ -7,26 +7,29 @@ import { Load } from '../../../../core/models/load.model';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
-import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { GroupDetailDialogComponent } from '../group-detail-dialog/group-detail-dialog.component';
-import { MatIconModule } from '@angular/material/icon';
+import { MatDialog } from '@angular/material/dialog';
+import { GroupDetailDialogComponent } from '../../common/dialogs/group-detail-dialog/group-detail-dialog.component';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
+import { Group } from '../../common/dialogs/group-dialog/group-dialog.component';
 
 @Component({
   standalone: true,
   selector: 'app-teacher-loads',
   templateUrl: './teacher-loads.component.html',
-  styleUrls: ['./teacher-loads.component.scss'],
+  styleUrls: [
+    './teacher-loads.component.scss',
+    '../../../../../styles/table.scss',
+  ],
   imports: [
+    CommonModule,
     MatTableModule,
     MatSortModule,
     MatPaginatorModule,
-    MatInputModule,
     MatFormFieldModule,
-    MatDialogModule,
-    MatIconModule,
+    MatProgressSpinnerModule,
   ],
 })
 export class TeacherLoadsComponent implements OnInit {
@@ -40,7 +43,9 @@ export class TeacherLoadsComponent implements OnInit {
   ];
   dataSource = new MatTableDataSource<Load>([]);
   teacher!: Teacher;
+  isLoading = true;
 
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
   constructor(
@@ -51,6 +56,10 @@ export class TeacherLoadsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setTeacher();
+  }
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
   setTeacher(): void {
@@ -70,9 +79,13 @@ export class TeacherLoadsComponent implements OnInit {
   setTeacherLoads(): void {
     this.loadService.getTeachersLoads().subscribe({
       next: (data: Load[]) => {
+        data.forEach((load: any) => {
+          load.paymentPerHour = load.subject.hourlyRate[load.lessonType];
+          load.totalPayment = load.hours * load.paymentPerHour;
+        });
         this.dataSource.data = data;
-        this.dataSource.sort = this.sort;
-        console.log(data);
+        console.log(this.dataSource.data);
+        this.isLoading = false;
       },
       error: (err: Error) => {
         console.error('Failed to fetch loads', err);
@@ -80,20 +93,7 @@ export class TeacherLoadsComponent implements OnInit {
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  announceSortChange(sortState: Sort) {
-    if (sortState.direction) {
-      console.log(`Sorted ${sortState.direction}ending`);
-    } else {
-      console.log('Sorting cleared');
-    }
-  }
-
-  openGroupDetailDialog(group: any): void {
+  openGroupDetailDialog(group: Group): void {
     this.dialog.open(GroupDetailDialogComponent, {
       width: '300px',
       data: group,

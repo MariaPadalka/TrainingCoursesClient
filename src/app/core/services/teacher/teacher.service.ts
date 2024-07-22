@@ -25,4 +25,28 @@ export class TeacherService {
   getCurrentTeacher(): Observable<Teacher> {
     return this.http.get<Teacher>(`${this.apiUrl}/${this.basicPath}/current`);
   }
+
+  createTeacher(teacher: Teacher): Observable<Teacher> {
+    return this.http.post<Teacher>(`${this.apiUrl}/${this.basicPath}`, teacher);
+  }
+
+  updateTeacher(id: string, teacher: Teacher): Observable<Teacher> {
+    return this.http.put<Teacher>(
+      `${this.apiUrl}/${this.basicPath}/${id}`,
+      teacher
+    );
+  }
+
+  patchTeacher(id: string, teacher: Partial<Teacher>): Observable<Teacher> {
+    return this.http.patch<Teacher>(
+      `${this.apiUrl}/${this.basicPath}/${id}`,
+      teacher
+    );
+  }
+
+  deleteTeacher(id: string): Observable<string> {
+    return this.http
+      .delete<{ message: string }>(`${this.apiUrl}/${this.basicPath}/${id}`)
+      .pipe(map((response) => response.message));
+  }
 }

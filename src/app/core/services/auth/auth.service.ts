@@ -15,6 +15,7 @@ interface AuthResponse {
 })
 export class AuthService {
   private apiUrl = environment.apiUrl;
+  private basePath = 'auth';
   private tokenKey = 'access-token';
   private userKey = 'user';
 
@@ -31,7 +32,7 @@ export class AuthService {
 
   login(email: string, password: string): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(
-      `${this.apiUrl}/auth/login`,
+      `${this.apiUrl}/${this.basePath}/login`,
       {
         email,
         password,
@@ -45,7 +46,7 @@ export class AuthService {
   refreshToken(): Observable<string> {
     return this.http
       .post<{ accessToken: string }>(
-        `${this.apiUrl}/auth/refresh`,
+        `${this.apiUrl}/${this.basePath}/refresh`,
         {},
         {
           withCredentials: true,
@@ -76,12 +77,23 @@ export class AuthService {
     return !!this.getToken();
   }
 
+  changePassword(oldPassword: string, newPassword: string): Observable<string> {
+    return this.http
+      .post<{ message: string }>(
+        `${this.apiUrl}/${this.basePath}/change-password`,
+        { oldPassword, newPassword }
+      )
+      .pipe(
+        map((response) => response.message)
+      );
+  }
+
   logout(): void {
     localStorage.removeItem(this.tokenKey);
     localStorage.removeItem(this.userKey);
     this.userSubject.next(null);
     this.http.post<{ accessToken: string }>(
-      `${this.apiUrl}/auth/logout`,
+      `${this.apiUrl}/${this.basePath}/logout`,
       {},
       {
         withCredentials: true,

@@ -6,6 +6,9 @@ import { TeacherLoadsComponent } from '../teacher-loads/teacher-loads.component'
   standalone: true,
   imports: [TeacherLoadsComponent],
   templateUrl: './teacher-dashboard.component.html',
-  styleUrl: './teacher-dashboard.component.css',
+  styleUrls: [
+    './teacher-dashboard.component.scss',
+    '../../../../../styles/table.scss',
+  ],
 })
 export class TeacherDashboardComponent {}

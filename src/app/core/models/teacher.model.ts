@@ -1,3 +1,5 @@
+import { Subject } from './subject.model';
+
 export class Teacher {
   _id: string;
   lastName: string;
@@ -5,7 +7,7 @@ export class Teacher {
   patronymic: string;
   phone: string;
   experience: number;
-  subjects: string[]; // Array of Subject IDs
+  subjects: Subject[];
 
   constructor(
     _id: string,
@@ -14,7 +16,7 @@ export class Teacher {
     patronymic: string,
     phone: string,
     experience: number,
-    subjects: string[]
+    subjects: Subject[]
   ) {
     this._id = _id;
     this.lastName = lastName;
