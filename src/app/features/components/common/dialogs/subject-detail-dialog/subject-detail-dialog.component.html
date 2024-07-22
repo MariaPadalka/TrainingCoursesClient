@@ -1,0 +1,10 @@
+<h1 mat-dialog-title>Subject Details</h1>
+<div mat-dialog-content>
+  <p><strong>Subject Name:</strong> {{ data.subjectName }}</p>
+  <p><strong>Hourly Rate: </strong></p>
+  <p class="rate-detail">- lectures: {{ data.hourlyRate.lecture }}</p>
+  <p class="rate-detail">- practice: {{ data.hourlyRate.practice }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close>Close</button>
+</div>

@@ -2,7 +2,9 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FooterComponent } from './core/components/footer/footer.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HeaderComponent } from './core/components/header/header.component';
+import { MainComponent } from './features/components/main/main.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatSortModule } from '@angular/material/sort';
 
 @Component({
   selector: 'app-root',
@@ -10,9 +12,11 @@ import { HeaderComponent } from './core/components/header/header.component';
   imports: [
     RouterOutlet,
     FooterComponent,
-    HeaderComponent,
+    MainComponent,
     FormsModule,
     ReactiveFormsModule,
+    MatTableModule,
+    MatSortModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
