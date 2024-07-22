@@ -50,5 +50,6 @@ export class SettingsComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.isLoading = false;
+    this.cdr.detectChanges();
   }
 }

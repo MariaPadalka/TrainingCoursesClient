@@ -17,25 +17,7 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-
-export class Group {
-  _id: string;
-  specialty: string;
-  department: string;
-  studentCount: number;
-
-  constructor(
-    _id: string,
-    specialty: string,
-    department: string,
-    studentCount: number
-  ) {
-    this._id = _id;
-    this.specialty = specialty;
-    this.department = department;
-    this.studentCount = studentCount;
-  }
-}
+import { Group } from '../../../../../core/models/group.model';
 
 @Component({
   selector: 'app-group-dialog',

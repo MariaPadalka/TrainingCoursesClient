@@ -20,6 +20,8 @@ import { Admin } from '../../../../core/models/admin.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { MatIcon } from '@angular/material/icon';
 import { ConfirmationDialogComponent } from '../../common/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { showError } from '../../../../core/handlers/error.handler.';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-admin-settings',
@@ -48,7 +50,8 @@ export class AdminSettingsComponent {
     private authService: AuthService,
     private adminService: AdminService,
     private formBuilder: FormBuilder,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -80,7 +83,6 @@ export class AdminSettingsComponent {
     });
   }
   setupFormListeners(): void {
-    // Очистити помилку, коли значення змінюється
     this.adminForm.get('email')?.valueChanges.subscribe(() => {
       this.errorMessage = '';
     });
@@ -110,8 +112,8 @@ export class AdminSettingsComponent {
       next: () => {
         this.admins = this.admins.filter((admin) => admin.id !== adminId);
       },
-      error: (err) => {
-        console.error('Error deleting admin:', err);
+      error: (responce) => {
+        showError(this.snackBar, responce);
       },
     });
   }

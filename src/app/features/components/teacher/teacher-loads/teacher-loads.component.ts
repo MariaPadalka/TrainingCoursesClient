@@ -13,7 +13,7 @@ import { GroupDetailDialogComponent } from '../../common/dialogs/group-detail-di
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
-import { Group } from '../../common/dialogs/group-dialog/group-dialog.component';
+import { Group } from '../../../../core/models/group.model';
 
 @Component({
   standalone: true,
