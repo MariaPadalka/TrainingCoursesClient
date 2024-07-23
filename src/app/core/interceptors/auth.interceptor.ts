@@ -5,10 +5,9 @@ import {
     HttpInterceptor,
     HttpRequest,
     HttpErrorResponse,
-    HttpResponse,
 } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap, tap } from 'rxjs/operators';
+import { catchError, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -22,9 +21,9 @@ export class AuthInterceptor implements HttpInterceptor {
     ) {}
 
     intercept(
-        req: HttpRequest<any>,
+        req: HttpRequest<unknown>,
         next: HttpHandler
-    ): Observable<HttpEvent<any>> {
+    ): Observable<HttpEvent<unknown>> {
         const token = this.authService.getToken();
         let authReq = req;
 
@@ -35,15 +34,8 @@ export class AuthInterceptor implements HttpInterceptor {
                 },
             });
         }
-        console.log('Request', req.url);
-        console.log('body:', req.body);
 
         return next.handle(authReq).pipe(
-            tap((event: HttpEvent<any>) => {
-                if (event instanceof HttpResponse) {
-                    console.log('Response:', event.body);
-                }
-            }),
             catchError((error: HttpErrorResponse) => {
                 if (error.status === 401 && !error.url?.includes('/auth')) {
                     return this.handle401Error(authReq, next);
@@ -53,7 +45,7 @@ export class AuthInterceptor implements HttpInterceptor {
         );
     }
 
-    private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
+    private handle401Error(request: HttpRequest<unknown>, next: HttpHandler) {
         return this.authService.refreshToken().pipe(
             switchMap((accessToken: string) => {
                 this.authService.saveToken(accessToken);

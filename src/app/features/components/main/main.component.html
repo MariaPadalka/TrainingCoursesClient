@@ -11,17 +11,25 @@
     <span class="title" *ngIf="user">Welcome, {{ user.email }}</span>
     <span class="spacer"></span>
     <nav class="nav-buttons" fxHide.lt-md>
-        <button *ngIf="user?.role == 'admin'" mat-button routerLink="/teachers">
+        <button
+            *ngIf="user?.role === 'admin'"
+            mat-button
+            routerLink="/teachers"
+        >
             Teachers
             <mat-icon>school</mat-icon>
         </button>
 
-        <button *ngIf="user?.role == 'admin'" mat-button routerLink="/groups">
+        <button *ngIf="user?.role === 'admin'" mat-button routerLink="/groups">
             Groups
             <mat-icon>group</mat-icon>
         </button>
 
-        <button *ngIf="user?.role == 'admin'" mat-button routerLink="/subjects">
+        <button
+            *ngIf="user?.role === 'admin'"
+            mat-button
+            routerLink="/subjects"
+        >
             Subjects
             <mat-icon>subject</mat-icon>
         </button>
@@ -57,7 +65,7 @@
     >
         <nav fxLayout="column">
             <button
-                *ngIf="user?.role == 'admin'"
+                *ngIf="user?.role === 'admin'"
                 mat-button
                 routerLink="/teachers"
                 (click)="sidenav.close()"
@@ -67,7 +75,7 @@
             </button>
 
             <button
-                *ngIf="user?.role == 'admin'"
+                *ngIf="user?.role === 'admin'"
                 mat-button
                 routerLink="/groups"
                 (click)="sidenav.close()"
@@ -77,7 +85,7 @@
             </button>
 
             <button
-                *ngIf="user?.role == 'admin'"
+                *ngIf="user?.role === 'admin'"
                 mat-button
                 routerLink="/subjects"
                 (click)="sidenav.close()"
@@ -87,7 +95,7 @@
             </button>
 
             <button
-                *ngIf="user?.role == 'admin'"
+                *ngIf="user?.role === 'admin'"
                 mat-button
                 routerLink="/"
                 (click)="sidenav.close()"
@@ -99,7 +107,7 @@
             <button
                 mat-button
                 routerLink="/"
-                *ngIf="user?.role == 'teacher'"
+                *ngIf="user?.role === 'teacher'"
                 (click)="sidenav.close()"
             >
                 Home

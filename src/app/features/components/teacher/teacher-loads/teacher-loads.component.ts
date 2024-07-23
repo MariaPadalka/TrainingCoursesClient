@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSort, Sort } from '@angular/material/sort';
+import { MatSort } from '@angular/material/sort';
 import { TeacherService } from '../../../../core/services/teacher/teacher.service';
 import { LoadService } from '../../../../core/services/load/load.service';
-import { Load } from '../../../../core/models/load.model';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -42,7 +41,7 @@ import { MatIconModule } from '@angular/material/icon';
         MatIconModule,
     ],
 })
-export class TeacherLoadsComponent implements OnInit {
+export class TeacherLoadsComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = [
         'subjectName',
         'groupName',
@@ -93,6 +92,7 @@ export class TeacherLoadsComponent implements OnInit {
             .getTeachersLoads()
             .subscribe({
                 next: (data: LoadPopulated[]) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     data.forEach((load: any) => {
                         load.paymentPerHour =
                             load.subject.hourlyRate[load.lessonType];

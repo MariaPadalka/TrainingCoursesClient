@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Teacher } from '../../../../core/models/teacher.model';
 import { TeacherService } from '../../../../core/services/teacher/teacher.service';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';

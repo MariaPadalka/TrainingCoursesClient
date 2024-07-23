@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../../enviroments/environment';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, map, Observable, throwError } from 'rxjs';
-import { User } from '../../models/user.model';
+import { HttpClient } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
 import { Admin } from '../../models/admin.model';
 
 @Injectable({

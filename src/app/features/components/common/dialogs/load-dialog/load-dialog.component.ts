@@ -17,7 +17,6 @@ import { GroupService } from '../../../../../core/services/group/group.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Load } from '../../../../../core/models/load.model';
 import { Subject } from '../../../../../core/models/subject.model';
-import { Teacher } from '../../../../../core/models/teacher.model';
 import { Group } from '../../../../../core/models/group.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';

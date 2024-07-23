@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AdminTeachersTableComponent } from '../../../components/admin/admin-teachers-table/admin-teachers-table.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../core/services/auth/auth.service';
@@ -10,7 +10,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
     templateUrl: './admin-teachers.component.html',
     styleUrl: './admin-teachers.component.scss',
 })
-export class AdminTeachersComponent {
+export class AdminTeachersComponent implements OnInit {
     constructor(
         private authService: AuthService,
         private router: Router

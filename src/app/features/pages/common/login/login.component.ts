@@ -37,8 +37,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class LoginComponent implements OnInit {
     form!: FormGroup;
-    errorMessage: string = '';
-    hidePassword: boolean = true;
+    errorMessage = '';
+    hidePassword = true;
 
     constructor(
         private fb: FormBuilder,

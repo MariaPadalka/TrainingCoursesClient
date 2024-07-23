@@ -14,6 +14,7 @@ export class LoadService {
 
     constructor(private http: HttpClient) {}
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getLoads(filters: any = {}): Observable<LoadPopulated[]> {
         let params = new HttpParams();
         Object.keys(filters).forEach((key) => {

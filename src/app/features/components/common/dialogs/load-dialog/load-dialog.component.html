@@ -12,6 +12,7 @@
                     [value]="teacher._id"
                 >
                     {{ teacher.firstName }} {{ teacher.lastName }}
+                    {{ teacher.patronymic }}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="loadForm.get('teacher')?.hasError('required')">
