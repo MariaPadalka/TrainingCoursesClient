@@ -1,10 +1,10 @@
 <ng-container *ngIf="userRole">
-  <div *ngIf="userRole === 'admin'">
-    <app-admin-dashboard></app-admin-dashboard>
-  </div>
-  <div *ngIf="userRole === 'teacher'">
-    <app-teacher-dashboard></app-teacher-dashboard>
-  </div>
+    <div *ngIf="userRole === 'admin'">
+        <app-admin-dashboard></app-admin-dashboard>
+    </div>
+    <div *ngIf="userRole === 'teacher'">
+        <app-teacher-dashboard></app-teacher-dashboard>
+    </div>
 </ng-container>
 
 <app-home *ngIf="!userRole"></app-home>

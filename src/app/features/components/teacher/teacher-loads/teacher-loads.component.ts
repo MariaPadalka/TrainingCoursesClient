@@ -14,89 +14,124 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 import { Group } from '../../../../core/models/group.model';
+import { SubjectDetailDialogComponent } from '../../common/dialogs/subject-detail-dialog/subject-detail-dialog.component';
+import { Subject } from '../../../../core/models/subject.model';
+import { showError } from '../../../../core/handlers/error.handler.';
+import { HttpErrorResponse } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatInputModule } from '@angular/material/input';
+import { LoadPopulated } from '../../../../core/models/populated/load-populated';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
-  standalone: true,
-  selector: 'app-teacher-loads',
-  templateUrl: './teacher-loads.component.html',
-  styleUrls: [
-    './teacher-loads.component.scss',
-    '../../../../../styles/table.scss',
-  ],
-  imports: [
-    CommonModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginatorModule,
-    MatFormFieldModule,
-    MatProgressSpinnerModule,
-  ],
+    standalone: true,
+    selector: 'app-teacher-loads',
+    templateUrl: './teacher-loads.component.html',
+    styleUrls: [
+        './teacher-loads.component.scss',
+        '../../../../../styles/table.scss',
+    ],
+    imports: [
+        CommonModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginatorModule,
+        MatFormFieldModule,
+        MatProgressSpinnerModule,
+        MatInputModule,
+        MatIconModule,
+    ],
 })
 export class TeacherLoadsComponent implements OnInit {
-  displayedColumns: string[] = [
-    'subject',
-    'group',
-    'lessonType',
-    'hours',
-    'paymentPerHour',
-    'totalPayment',
-  ];
-  dataSource = new MatTableDataSource<Load>([]);
-  teacher!: Teacher;
-  isLoading = true;
+    displayedColumns: string[] = [
+        'subjectName',
+        'groupName',
+        'lessonType',
+        'hours',
+        'paymentPerHour',
+        'totalPayment',
+    ];
+    dataSource = new MatTableDataSource<LoadPopulated>([]);
+    teacher!: Teacher;
+    isLoading = true;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private teacherService: TeacherService,
-    private loadService: LoadService,
-    public dialog: MatDialog
-  ) {}
+    constructor(
+        private teacherService: TeacherService,
+        private loadService: LoadService,
+        public dialog: MatDialog,
+        private snackBar: MatSnackBar
+    ) {}
 
-  ngOnInit(): void {
-    this.setTeacher();
-  }
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
+    ngOnInit(): void {
+        this.setTeacher();
+    }
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
 
-  setTeacher(): void {
-    this.teacherService.getCurrentTeacher().subscribe({
-      next: (teacher) => {
-        if (teacher) {
-          this.teacher = teacher;
-          this.setTeacherLoads();
-        }
-      },
-      error: (error) => {
-        console.error('Failed to retrieve current teacher:', error);
-      },
-    });
-  }
-
-  setTeacherLoads(): void {
-    this.loadService.getTeachersLoads().subscribe({
-      next: (data: Load[]) => {
-        data.forEach((load: any) => {
-          load.paymentPerHour = load.subject.hourlyRate[load.lessonType];
-          load.totalPayment = load.hours * load.paymentPerHour;
+    setTeacher(): void {
+        this.teacherService.getCurrentTeacher().subscribe({
+            next: (teacher) => {
+                if (teacher) {
+                    this.teacher = teacher;
+                    this.setTeacherLoads();
+                }
+            },
+            error: (response: HttpErrorResponse) => {
+                showError(this.snackBar, response);
+                console.error('Failed to retrieve current teacher:', response);
+            },
         });
-        this.dataSource.data = data;
-        console.log(this.dataSource.data);
-        this.isLoading = false;
-      },
-      error: (err: Error) => {
-        console.error('Failed to fetch loads', err);
-      },
-    });
-  }
+    }
 
-  openGroupDetailDialog(group: Group): void {
-    this.dialog.open(GroupDetailDialogComponent, {
-      width: '300px',
-      data: group,
-    });
-  }
+    setTeacherLoads(): void {
+        this.loadService
+            .getTeachersLoads()
+            .subscribe({
+                next: (data: LoadPopulated[]) => {
+                    data.forEach((load: any) => {
+                        load.paymentPerHour =
+                            load.subject.hourlyRate[load.lessonType];
+                        load.totalPayment = load.hours * load.paymentPerHour;
+                        load.groupName = load.group.specialty;
+                        load.subjectName = load.subject.subjectName;
+                    });
+                    this.dataSource.data = data;
+                },
+                error: (response: HttpErrorResponse) => {
+                    showError(this.snackBar, response);
+                    console.error('Failed to fetch loads', response);
+                },
+            })
+            .add(() => (this.isLoading = false));
+    }
+
+    openGroupDetailDialog(group: Group): void {
+        this.dialog.open(GroupDetailDialogComponent, {
+            width: '300px',
+            data: group,
+        });
+    }
+
+    openSubjectDetailDialog(subject: Subject): void {
+        this.dialog.open(SubjectDetailDialogComponent, {
+            width: '400px',
+            data: subject,
+        });
+    }
+
+    applyFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value
+            .trim()
+            .toLowerCase();
+        this.dataSource.filter = filterValue;
+
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
 }

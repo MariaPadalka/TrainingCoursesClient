@@ -10,56 +10,57 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../common/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @Component({
-  selector: 'app-main',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatToolbarModule,
-    MatButtonModule,
-    RouterModule,
-    MatIconModule,
-    MatSidenavModule,
-  ],
-  templateUrl: './main.component.html',
-  styleUrl: './main.component.scss',
+    selector: 'app-main',
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatToolbarModule,
+        MatButtonModule,
+        RouterModule,
+        MatIconModule,
+        MatSidenavModule,
+        FlexLayoutModule,
+    ],
+    templateUrl: './main.component.html',
+    styleUrl: './main.component.scss',
 })
 export class MainComponent implements OnInit, OnDestroy {
-  user!: User | null;
-  userSubscription!: Subscription;
+    user!: User | null;
+    userSubscription!: Subscription;
 
-  constructor(
-    private authService: AuthService,
-    private router: Router,
-    public dialog: MatDialog
-  ) {}
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        public dialog: MatDialog
+    ) {}
 
-  ngOnInit(): void {
-    this.userSubscription = this.authService.user$.subscribe((user) => {
-      this.user = user;
-    });
-  }
+    ngOnInit(): void {
+        this.userSubscription = this.authService.user$.subscribe((user) => {
+            this.user = user;
+        });
+    }
 
-  ngOnDestroy(): void {
-    this.userSubscription.unsubscribe();
-  }
+    ngOnDestroy(): void {
+        this.userSubscription.unsubscribe();
+    }
 
-  openConfirmationDialog(): void {
-    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
-      data: {
-        question: 'Are you sure you want to logout?',
-        onConfirm: () => this.logout(),
-      },
-    });
+    openConfirmationDialog(): void {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                question: 'Are you sure you want to logout?',
+                onConfirm: () => this.logout(),
+            },
+        });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
-  }
+        dialogRef.afterClosed().subscribe((_) => {
+            this.router.navigate(['/login']);
+        });
+    }
 
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
-  }
+    logout(): void {
+        this.authService.logout();
+    }
 }

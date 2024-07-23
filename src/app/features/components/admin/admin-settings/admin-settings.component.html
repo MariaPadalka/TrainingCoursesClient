@@ -1,65 +1,71 @@
+<div class="spinner-container" *ngIf="isLoading">
+    <mat-progress-spinner
+        mode="indeterminate"
+        color="primary"
+    ></mat-progress-spinner>
+</div>
 <mat-card-content>
-  <p><strong>Email:</strong> {{ user?.email }}</p>
-  <ng-content *ngIf="admins.length > 0">
+    <p><strong>Email:</strong> {{ user?.email }}</p>
+    <ng-content *ngIf="!isLoading && admins && admins?.length !== 0">
+        <mat-card-subtitle>
+            <p>Other admins:</p>
+        </mat-card-subtitle>
+        <ul>
+            <li *ngFor="let admin of admins">
+                {{ admin.email }}
+                <button
+                    mat-icon-button
+                    class="delete-button"
+                    (click)="openDeleteDialog(admin.id)"
+                >
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </li>
+        </ul>
+    </ng-content>
+    <ng-content *ngIf="!isLoading && admins?.length === 0">
+        <p>There are no other admins.</p>
+    </ng-content>
+
     <mat-card-subtitle>
-      <p>Other admins:</p>
+        <p>Add new admin:</p>
     </mat-card-subtitle>
-    <ul>
-      <li *ngFor="let admin of admins">
-        {{ admin.email }}
+    <form [formGroup]="adminForm" (ngSubmit)="registerAdmin()">
+        <mat-form-field>
+            <input
+                name="username"
+                required
+                matInput
+                formControlName="email"
+                placeholder="Admin Email"
+                type="email"
+            />
+            <mat-error
+                *ngIf="
+                    adminForm.get('email')?.hasError('required') &&
+                    adminForm.get('email')?.touched
+                "
+            >
+                Email is required
+            </mat-error>
+            <mat-error
+                *ngIf="
+                    adminForm.get('email')?.hasError('email') &&
+                    adminForm.get('email')?.touched
+                "
+            >
+                Invalid email format
+            </mat-error>
+        </mat-form-field>
+        <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
+
         <button
-          mat-icon-button
-          class="delete-button"
-          (click)="openDeleteDialog(admin.id)"
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="adminForm.invalid"
         >
-          <mat-icon>delete</mat-icon>
+            Add Admin
         </button>
-      </li>
-    </ul>
-  </ng-content>
-  <ng-content *ngIf="admins.length === 0">
-    <p>There are no other admins.</p>
-  </ng-content>
-
-  <mat-card-subtitle>
-    <p>Add new admin:</p>
-  </mat-card-subtitle>
-  <form [formGroup]="adminForm" (ngSubmit)="registerAdmin()">
-    <mat-form-field>
-      <input
-        name="username"
-        required
-        matInput
-        formControlName="email"
-        placeholder="Admin Email"
-        type="email"
-      />
-      <mat-error
-        *ngIf="
-          adminForm.get('email')?.hasError('required') &&
-          adminForm.get('email')?.touched
-        "
-      >
-        Email is required
-      </mat-error>
-      <mat-error
-        *ngIf="
-          adminForm.get('email')?.hasError('email') &&
-          adminForm.get('email')?.touched
-        "
-      >
-        Invalid email format
-      </mat-error>
-    </mat-form-field>
-    <mat-error *ngIf="errorMessage">{{ errorMessage }}</mat-error>
-
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      [disabled]="adminForm.invalid"
-    >
-      Add Admin
-    </button>
-  </form>
+    </form>
 </mat-card-content>

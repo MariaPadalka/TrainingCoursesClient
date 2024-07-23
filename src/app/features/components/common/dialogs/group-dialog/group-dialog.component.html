@@ -1,35 +1,35 @@
-<h2 mat-dialog-title>{{ data.group ? "Edit Group" : "Add Group" }}</h2>
+<h2 mat-dialog-title>{{ data.group ? 'Edit Group' : 'Add Group' }}</h2>
 <mat-dialog-content [formGroup]="groupForm" class="dialog-content">
-  <mat-form-field appearance="fill">
-    <mat-label>Specialty</mat-label>
-    <input matInput formControlName="specialty" />
-    <mat-error *ngIf="groupForm.get('specialty')?.hasError('required')">
-      Specialty is required
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Specialty</mat-label>
+        <input matInput formControlName="specialty" />
+        <mat-error *ngIf="groupForm.get('specialty')?.hasError('required')">
+            Specialty is required
+        </mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Department</mat-label>
-    <input matInput formControlName="department" />
-    <mat-error *ngIf="groupForm.get('department')?.hasError('required')">
-      Department is required
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Department</mat-label>
+        <input matInput formControlName="department" />
+        <mat-error *ngIf="groupForm.get('department')?.hasError('required')">
+            Department is required
+        </mat-error>
+    </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Student Count</mat-label>
-    <input matInput type="number" formControlName="studentCount" />
-    <mat-error *ngIf="groupForm.get('studentCount')?.hasError('required')">
-      Student count is required
-    </mat-error>
-    <mat-error *ngIf="groupForm.get('studentCount')?.hasError('min')">
-      Student count must be at least 1
-    </mat-error>
-  </mat-form-field>
+    <mat-form-field appearance="fill">
+        <mat-label>Student Count</mat-label>
+        <input matInput type="number" formControlName="studentCount" />
+        <mat-error *ngIf="groupForm.get('studentCount')?.hasError('required')">
+            Student count is required
+        </mat-error>
+        <mat-error *ngIf="groupForm.get('studentCount')?.hasError('min')">
+            Student count must be at least 1
+        </mat-error>
+    </mat-form-field>
 </mat-dialog-content>
 <mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [disabled]="!groupForm.valid" (click)="onSaveClick()">
-    Save
-  </button>
+    <button mat-button (click)="onNoClick()">Cancel</button>
+    <button mat-button [disabled]="!groupForm.valid" (click)="onSaveClick()">
+        Save
+    </button>
 </mat-dialog-actions>

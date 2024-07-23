@@ -1,71 +1,101 @@
 <div class="component-container">
-  <div class="spinner-container" *ngIf="isLoading">
-    <mat-progress-spinner
-      mode="indeterminate"
-      color="primary"
-    ></mat-progress-spinner>
-  </div>
-  <div class="table-container" [ngClass]="{ hidden: isLoading }">
-    <div class="flex-container">
-      <h2>Groups</h2>
-      <button mat-raised-button color="primary" (click)="openGroupDialog()">
-        Add New Group
-      </button>
+    <div class="spinner-container" *ngIf="isLoading">
+        <mat-progress-spinner
+            mode="indeterminate"
+            color="primary"
+        ></mat-progress-spinner>
     </div>
-    <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
-      <ng-container matColumnDef="specialty">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Specialty</th>
-        <td data-label="Specialty" mat-cell *matCellDef="let group">
-          {{ group.specialty }}
-        </td>
-      </ng-container>
+    <div class="table-container" [ngClass]="{ hidden: isLoading }">
+        <mat-form-field class="full-width">
+            <mat-label>
+                <mat-icon>search</mat-icon>
+                Search
+            </mat-label>
+            <input
+                matInput
+                (keyup)="applyFilter($event)"
+                placeholder="Search"
+            />
+        </mat-form-field>
 
-      <ng-container matColumnDef="department">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Department</th>
-        <td data-label="Department" mat-cell *matCellDef="let group">
-          {{ group.department }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="studentCount">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header>Student Count</th>
-        <td data-label="StudentCount" mat-cell *matCellDef="let group">
-          {{ group.studentCount }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef>Actions</th>
-        <td
-          class="bigger-height"
-          mat-cell
-          data-label="Actions"
-          *matCellDef="let group"
+        <div class="flex-container">
+            <h2>Groups</h2>
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="openGroupDialog()"
+            >
+                Add New Group
+            </button>
+        </div>
+        <ng-container *ngIf="this.dataSource.filteredData.length == 0">
+            <p>No records found.</p>
+        </ng-container>
+        <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
         >
-          <button
-            class="action-btn"
-            mat-icon-button
-            (click)="openGroupDialog(group)"
-          >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button
-            class="action-btn"
-            mat-icon-button
-            (click)="openDeleteDialog(group._id)"
-          >
-            <mat-icon>delete</mat-icon>
-          </button>
-        </td>
-      </ng-container>
+            <ng-container matColumnDef="specialty">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Specialty
+                </th>
+                <td data-label="Specialty" mat-cell *matCellDef="let group">
+                    {{ group.specialty }}
+                </td>
+            </ng-container>
 
-      <tr
-        class="not-for-mobile"
-        mat-header-row
-        *matHeaderRowDef="displayedColumns"
-      ></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-    </table>
-    <mat-paginator [pageSizeOptions]="[2, 5, 10, 25]"></mat-paginator>
-  </div>
+            <ng-container matColumnDef="department">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Department
+                </th>
+                <td data-label="Department" mat-cell *matCellDef="let group">
+                    {{ group.department }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="studentCount">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Student Count
+                </th>
+                <td data-label="StudentCount" mat-cell *matCellDef="let group">
+                    {{ group.studentCount }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td
+                    class="bigger-height"
+                    mat-cell
+                    data-label="Actions"
+                    *matCellDef="let group"
+                >
+                    <button
+                        class="action-btn"
+                        mat-icon-button
+                        (click)="openGroupDialog(group)"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                        class="action-btn"
+                        mat-icon-button
+                        (click)="openDeleteDialog(group._id)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr
+                class="not-for-mobile"
+                mat-header-row
+                *matHeaderRowDef="displayedColumns"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+    </div>
 </div>

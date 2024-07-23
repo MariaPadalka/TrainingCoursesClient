@@ -1,22 +1,22 @@
 <mat-card-header>
-  <mat-card-title
-    >{{ teacher?.firstName }} {{ teacher?.lastName }}
-    {{ teacher?.patronymic }}</mat-card-title
-  >
+    <mat-card-title
+        >{{ teacher?.firstName }} {{ teacher?.lastName }}
+        {{ teacher?.patronymic }}</mat-card-title
+    >
 </mat-card-header>
 <mat-card-content>
-  <p><strong>Email:</strong> {{ user?.email }}</p>
-  <p><strong>Phone:</strong> {{ teacher?.phone }}</p>
-  <p><strong>Experience:</strong> {{ teacher?.experience }} years</p>
-  <div class="subjects-container">
-    <strong>Subjects:</strong>
-    <button
-      mat-raised-button
-      color="primary"
-      *ngFor="let subject of teacher?.subjects"
-      (click)="openSubjectDetailDialog(subject)"
-    >
-      {{ subject.subjectName }}
-    </button>
-  </div>
+    <p><strong>Email:</strong> {{ user?.email }}</p>
+    <p><strong>Phone:</strong> {{ teacher?.phone }}</p>
+    <p><strong>Experience:</strong> {{ teacher?.experience }} years</p>
+    <div class="subjects-container">
+        <strong>Subjects:</strong>
+        <button
+            mat-raised-button
+            color="primary"
+            *ngFor="let subject of teacher?.subjects"
+            (click)="openSubjectDetailDialog(subject)"
+        >
+            {{ subject.subjectName }}
+        </button>
+    </div>
 </mat-card-content>
