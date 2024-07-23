@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Group } from '../../../../core/models/group.model';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { GroupService } from '../../../../core/services/group/group.service';
@@ -43,7 +43,7 @@ import { HttpErrorResponse } from '@angular/common/http';
         '../admin-table.style.scss',
     ],
 })
-export class AdminGroupsTableComponent implements OnInit {
+export class AdminGroupsTableComponent implements OnInit, AfterViewInit {
     groups: Group[] = [];
     displayedColumns: string[] = [
         'specialty',

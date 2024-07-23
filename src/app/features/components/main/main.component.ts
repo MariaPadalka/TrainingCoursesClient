@@ -55,7 +55,7 @@ export class MainComponent implements OnInit, OnDestroy {
             },
         });
 
-        dialogRef.afterClosed().subscribe((_) => {
+        dialogRef.afterClosed().subscribe(() => {
             this.router.navigate(['/login']);
         });
     }

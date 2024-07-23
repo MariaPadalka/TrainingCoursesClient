@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Subject } from '../../../../core/models/subject.model';
 import { SubjectService } from '../../../../core/services/subject/subject.service';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -40,7 +40,7 @@ import { showError } from '../../../../core/handlers/error.handler.';
         '../admin-table.style.scss',
     ],
 })
-export class AdminSubjectsTableComponent implements OnInit {
+export class AdminSubjectsTableComponent implements OnInit, AfterViewInit {
     subjects: Subject[] = [];
     displayedColumns: string[] = [
         'subjectName',

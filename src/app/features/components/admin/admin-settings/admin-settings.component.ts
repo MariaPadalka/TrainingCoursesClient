@@ -2,7 +2,7 @@ import { AuthService } from '../../../../core/services/auth/auth.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTabsModule } from '@angular/material/tabs';
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { CommonModule } from '@angular/common';
 import { User } from '../../../../core/models/user.model';
@@ -46,7 +46,7 @@ export class AdminSettingsComponent implements OnInit {
     user!: User | null;
     admins!: Admin[] | undefined;
     adminForm!: FormGroup;
-    errorMessage: string = '';
+    errorMessage = '';
     isLoading = true;
 
     constructor(
@@ -103,6 +103,13 @@ export class AdminSettingsComponent implements OnInit {
                     this.errorMessage = '';
                     this.admins?.push(admin);
                     this.adminForm.reset();
+                    this.snackBar.open(
+                        "Admin created successfully. Admin's password is sent in letter on specified email",
+                        'Close',
+                        {
+                            duration: 6000,
+                        }
+                    );
                 },
                 error: (response: HttpErrorResponse) => {
                     console.error('Registration failed', response);

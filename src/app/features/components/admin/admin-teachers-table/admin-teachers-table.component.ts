@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -11,12 +11,12 @@ import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule, MatIconButton } from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { showError } from '../../../../core/handlers/error.handler.';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TeacherDialogComponent } from '../../common/dialogs/teacher-dialog/teacher-dialog.component';
 import { ConfirmationDialogComponent } from '../../common/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { MatIcon, MatIconModule } from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { ReactiveFormsModule } from '@angular/forms';
 import { Teacher } from '../../../../core/models/teacher.model';
 import { TeacherPopulated } from '../../../../core/models/populated/teacher-populated';
@@ -24,9 +24,9 @@ import { TeacherPopulated } from '../../../../core/models/populated/teacher-popu
 @Component({
     selector: 'app-admin-teachers-table',
     standalone: true,
-    imports:[
-      CommonModule,
-       MatProgressSpinnerModule,
+    imports: [
+        CommonModule,
+        MatProgressSpinnerModule,
         MatFormFieldModule,
         MatTableModule,
         MatPaginatorModule,
@@ -35,7 +35,7 @@ import { TeacherPopulated } from '../../../../core/models/populated/teacher-popu
         ReactiveFormsModule,
         MatInputModule,
         MatIconModule,
-      ],
+    ],
     templateUrl: './admin-teachers-table.component.html',
     styleUrls: [
         './admin-teachers-table.component.scss',
@@ -43,7 +43,7 @@ import { TeacherPopulated } from '../../../../core/models/populated/teacher-popu
         '../admin-table.style.scss',
     ],
 })
-export class AdminTeachersTableComponent implements OnInit {
+export class AdminTeachersTableComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = [
         'name',
         'phone',
@@ -77,6 +77,7 @@ export class AdminTeachersTableComponent implements OnInit {
             .getTeachers()
             .subscribe({
                 next: (data: TeacherPopulated[]) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     data.forEach((teacher: any) => {
                         teacher.name = `${teacher.lastName} ${teacher.firstName} ${teacher.patronymic}`;
                         teacher.email = teacher.user.email;
@@ -135,9 +136,13 @@ export class AdminTeachersTableComponent implements OnInit {
         this.teacherService.createTeacher(teacher).subscribe({
             next: () => {
                 this.loadTeachers();
-                this.snackBar.open('Teacher created successfully', 'Close', {
-                    duration: 3000,
-                });
+                this.snackBar.open(
+                    "Teacher created successfully. Teacher's password is sent in letter on specified email",
+                    'Close',
+                    {
+                        duration: 6000,
+                    }
+                );
             },
             error: (response) => {
                 showError(this.snackBar, response);

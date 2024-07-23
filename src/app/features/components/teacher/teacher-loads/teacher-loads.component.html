@@ -19,8 +19,15 @@
         </mat-form-field>
 
         <h2>Table of loads</h2>
-        <ng-container *ngIf="this.dataSource.filteredData.length == 0">
-            <p>No records found.</p>
+        <ng-container *ngIf="this.dataSource.filteredData.length === 0">
+            <p>
+                No records found.
+                <br />
+                If you believe there should be data available, please contact
+                the administrator for assistance.
+                <br />
+                <br />
+            </p>
         </ng-container>
         <table
             mat-table

@@ -1,7 +1,4 @@
-import { Group } from './group.model';
 import { LessonType } from './lesson.type';
-import { Subject } from './subject.model';
-import { Teacher } from './teacher.model';
 
 export class Load {
     _id: string;

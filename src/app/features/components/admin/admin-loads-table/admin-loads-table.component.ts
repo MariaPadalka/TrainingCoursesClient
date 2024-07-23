@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
     MatFormField,
@@ -54,7 +54,7 @@ import { ConfirmationDialogComponent } from '../../common/dialogs/confirmation-d
         '../admin-table.style.scss',
     ],
 })
-export class AdminLoadsTableComponent {
+export class AdminLoadsTableComponent implements OnInit, AfterViewInit {
     displayedColumns: string[] = [
         'teacherName',
         'subjectName',
@@ -91,6 +91,7 @@ export class AdminLoadsTableComponent {
             .getLoads()
             .subscribe({
                 next: (data: LoadPopulated[]) => {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     data.forEach((load: any) => {
                         load.paymentPerHour =
                             load.subject.hourlyRate[load.lessonType];

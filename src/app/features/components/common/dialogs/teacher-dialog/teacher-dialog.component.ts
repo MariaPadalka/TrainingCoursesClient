@@ -22,7 +22,6 @@ import { Teacher } from '../../../../../core/models/teacher.model';
 import { SubjectService } from '../../../../../core/services/subject/subject.service';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import { User } from '../../../../../core/models/user.model';
 import { TeacherPopulated } from '../../../../../core/models/populated/teacher-populated';
 
 @Component({

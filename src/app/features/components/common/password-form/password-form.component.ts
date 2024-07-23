@@ -34,7 +34,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class PasswordFormComponent implements OnInit {
     submitted = false;
-    errorMessage: string = '';
+    errorMessage = '';
     passwordForm!: FormGroup;
     hideOldPassword = true;
     hideNewPassword = true;
@@ -60,7 +60,7 @@ export class PasswordFormComponent implements OnInit {
             { validator: this.passwordsMatch }
         );
     }
-    passwordsMatch(formGroup: FormGroup): Object | null {
+    passwordsMatch(formGroup: FormGroup): object | null {
         const { newPassword, confirmNewPassword } = formGroup.controls;
         return newPassword.value === confirmNewPassword.value
             ? null
