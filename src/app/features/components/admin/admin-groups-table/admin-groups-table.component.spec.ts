@@ -3,21 +3,20 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AdminGroupsTableComponent } from './admin-groups-table.component';
 
 describe('AdminGroupsTableComponent', () => {
-  let component: AdminGroupsTableComponent;
-  let fixture: ComponentFixture<AdminGroupsTableComponent>;
+    let component: AdminGroupsTableComponent;
+    let fixture: ComponentFixture<AdminGroupsTableComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [AdminGroupsTableComponent]
-    })
-    .compileComponents();
+    beforeEach(async () => {
+        await TestBed.configureTestingModule({
+            imports: [AdminGroupsTableComponent],
+        }).compileComponents();
 
-    fixture = TestBed.createComponent(AdminGroupsTableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+        fixture = TestBed.createComponent(AdminGroupsTableComponent);
+        component = fixture.componentInstance;
+        fixture.detectChanges();
+    });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+    it('should create', () => {
+        expect(component).toBeTruthy();
+    });
 });

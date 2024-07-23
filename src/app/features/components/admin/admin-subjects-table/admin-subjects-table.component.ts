@@ -19,140 +19,160 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { showError } from '../../../../core/handlers/error.handler.';
 
 @Component({
-  selector: 'app-admin-subjects-table',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatTableModule,
-    MatSortModule,
-    MatPaginator,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './admin-subjects-table.component.html',
-  styleUrls: [
-    './admin-subjects-table.component.scss',
-    '../../../../../styles/table.scss',
-    '../admin-table.style.scss',
-  ],
+    selector: 'app-admin-subjects-table',
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatInputModule,
+        MatButtonModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatTableModule,
+        MatSortModule,
+        MatPaginator,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './admin-subjects-table.component.html',
+    styleUrls: [
+        './admin-subjects-table.component.scss',
+        '../../../../../styles/table.scss',
+        '../admin-table.style.scss',
+    ],
 })
 export class AdminSubjectsTableComponent implements OnInit {
-  subjects: Subject[] = [];
-  displayedColumns: string[] = [
-    'subjectName',
-    'hourlyRatePractice',
-    'hourlyRateLecture',
-    'actions',
-  ];
-  dataSource = new MatTableDataSource<Subject>([]);
-  isLoading = true;
+    subjects: Subject[] = [];
+    displayedColumns: string[] = [
+        'subjectName',
+        'hourlyRatePractice',
+        'hourlyRateLecture',
+        'actions',
+    ];
+    dataSource = new MatTableDataSource<Subject>([]);
+    isLoading = true;
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(
-    private subjectService: SubjectService,
-    public dialog: MatDialog,
-    private snackBar: MatSnackBar
-  ) {}
+    constructor(
+        private subjectService: SubjectService,
+        public dialog: MatDialog,
+        private snackBar: MatSnackBar
+    ) {}
 
-  ngOnInit(): void {
-    this.loadSubjects();
-  }
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-    this.dataSource.sort = this.sort;
-  }
-
-  loadSubjects(): void {
-    this.subjectService.getAllSubjects().subscribe((subjects) => {
-      const data = subjects.map((subject) => ({
-        ...subject,
-        hourlyRatePractice: subject.hourlyRate.practice,
-        hourlyRateLecture: subject.hourlyRate.lecture,
-      }));
-      this.dataSource.data = data; // Update the data source
-      console.log(this.dataSource.data);
-      this.isLoading = false;
-    });
-  }
-
-  openSubjectDialog(subject?: Subject): void {
-    const dialogRef = this.dialog.open(SubjectDialogComponent, {
-      data: {
-        subject,
-        subjects: this.subjects,
-        onSubmit: (updatedSubject: Subject) => {
-          if (subject) {
-            this.updateSubject(updatedSubject);
-          } else {
-            this.createSubject(updatedSubject);
-          }
-        },
-      },
-    });
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
+    ngOnInit(): void {
         this.loadSubjects();
-      }
-    });
-  }
+    }
 
-  createSubject(subject: Subject): void {
-    this.subjectService.createSubject(subject).subscribe({
-      next: () => {
-        this.loadSubjects();
-        this.snackBar.open('Subject created successfully', 'Close', {
-          duration: 3000,
+    ngAfterViewInit() {
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+    }
+
+    loadSubjects(): void {
+        this.subjectService
+            .getAllSubjects()
+            .subscribe({
+                next: (subjects) => {
+                    const data = subjects.map((subject) => ({
+                        ...subject,
+                        hourlyRatePractice: subject.hourlyRate.practice,
+                        hourlyRateLecture: subject.hourlyRate.lecture,
+                    }));
+                    this.dataSource.data = data; // Update the data source
+                },
+                error: (response: HttpErrorResponse) => {
+                    showError(this.snackBar, response);
+                },
+            })
+            .add(() => (this.isLoading = false));
+    }
+
+    openSubjectDialog(subject?: Subject): void {
+        const dialogRef = this.dialog.open(SubjectDialogComponent, {
+            data: {
+                subject,
+                subjects: this.subjects,
+                onSubmit: (updatedSubject: Subject) => {
+                    if (subject) {
+                        this.updateSubject(updatedSubject);
+                    } else {
+                        this.createSubject(updatedSubject);
+                    }
+                },
+            },
         });
-      },
-      error: (responce) => {
-        showError(this.snackBar, responce);
-      },
-    });
-  }
 
-  updateSubject(subject: Subject): void {
-    this.subjectService.updateSubject(subject._id, subject).subscribe({
-      next: () => {
-        this.loadSubjects();
-        this.snackBar.open('Subject updated successfully', 'Close', {
-          duration: 3000,
+        dialogRef.afterClosed().subscribe((result) => {
+            if (result) {
+                this.loadSubjects();
+            }
         });
-      },
-      error: (responce) => {
-        showError(this.snackBar, responce);
-      },
-    });
-  }
+    }
 
-  openDeleteDialog(id: string): void {
-    this.dialog.open(ConfirmationDialogComponent, {
-      data: {
-        question: 'Are you sure you want to delete this subject?',
-        onConfirm: () => this.deleteSubject(id),
-      },
-    });
-  }
-
-  deleteSubject(id: string): void {
-    this.subjectService.deleteSubject(id).subscribe({
-      next: () => {
-        this.subjects = this.subjects.filter((subject) => subject._id !== id);
-        this.loadSubjects(); // Refresh the list after deletion
-        this.snackBar.open('Subject deleted successfully', 'Close', {
-          duration: 3000,
+    createSubject(subject: Subject): void {
+        this.subjectService.createSubject(subject).subscribe({
+            next: () => {
+                this.loadSubjects();
+                this.snackBar.open('Subject created successfully', 'Close', {
+                    duration: 3000,
+                });
+            },
+            error: (response) => {
+                showError(this.snackBar, response);
+            },
         });
-      },
-      error: (responce) => {
-        showError(this.snackBar, responce);
-      },
-    });
-  }
+    }
+
+    updateSubject(subject: Subject): void {
+        this.subjectService.updateSubject(subject._id, subject).subscribe({
+            next: () => {
+                this.loadSubjects();
+                this.snackBar.open('Subject updated successfully', 'Close', {
+                    duration: 3000,
+                });
+            },
+            error: (response) => {
+                showError(this.snackBar, response);
+            },
+        });
+    }
+
+    openDeleteDialog(id: string): void {
+        this.dialog.open(ConfirmationDialogComponent, {
+            data: {
+                question:
+                    'Are you sure you want to delete this subject?\n Loads for this subject is going to be deleted too!',
+                onConfirm: () => this.deleteSubject(id),
+            },
+        });
+    }
+
+    deleteSubject(id: string): void {
+        this.subjectService.deleteSubject(id).subscribe({
+            next: () => {
+                this.subjects = this.subjects.filter(
+                    (subject) => subject._id !== id
+                );
+                this.loadSubjects(); // Refresh the list after deletion
+                this.snackBar.open('Subject deleted successfully', 'Close', {
+                    duration: 3000,
+                });
+            },
+            error: (response) => {
+                showError(this.snackBar, response);
+            },
+        });
+    }
+
+    applyFilter(event: Event): void {
+        const filterValue = (event.target as HTMLInputElement).value
+            .trim()
+            .toLowerCase();
+        this.dataSource.filter = filterValue;
+
+        if (this.dataSource.paginator) {
+            this.dataSource.paginator.firstPage();
+        }
+    }
 }

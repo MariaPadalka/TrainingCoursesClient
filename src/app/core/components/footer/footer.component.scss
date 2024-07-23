@@ -1,16 +1,16 @@
 .footer {
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 7vh;
-  max-height: 80px;
-  min-height: 50px;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 7vh;
+    max-height: 80px;
+    min-height: 50px;
 
-  .center-content {
-    text-align: center;
-    color: grey;
-    font-size: 1rem;
-  }
+    .center-content {
+        text-align: center;
+        color: grey;
+        font-size: 1rem;
+    }
 }

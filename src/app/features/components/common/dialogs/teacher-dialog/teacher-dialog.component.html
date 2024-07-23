@@ -1,0 +1,102 @@
+<h1 mat-dialog-title>
+    {{ data.teacher ? 'Edit Teacher' : 'Add Teacher' }}
+</h1>
+
+<form [formGroup]="subjectForm">
+    <div mat-dialog-content>
+        <mat-form-field appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" />
+            <mat-error
+                *ngIf="subjectForm.get('firstName')?.hasError('required')"
+            >
+                First Name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" />
+            <mat-error
+                *ngIf="subjectForm.get('lastName')?.hasError('required')"
+            >
+                Last Name is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Patronymic</mat-label>
+            <input matInput formControlName="patronymic" />
+            <mat-error
+                *ngIf="subjectForm.get('patronymic')?.hasError('required')"
+            >
+                Patronymic is required
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="subjectForm.get('email')?.hasError('required')">
+                Email is required
+            </mat-error>
+            <mat-error *ngIf="subjectForm.get('email')?.hasError('email')">
+                Invalid email format
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Phone</mat-label>
+            <input
+                matInput
+                formControlName="phone"
+                type="tel"
+                name="phone"
+                pattern="^\+[0-9]{2} [0-9]{3} [0-9]{3} [0-9]{4}$"
+            />
+            <mat-error *ngIf="subjectForm.get('phone')?.hasError('required')">
+                Phone is required
+            </mat-error>
+            <mat-error *ngIf="subjectForm.get('phone')?.hasError('pattern')">
+                Use +xx xxx xxx xxxx format.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Experience</mat-label>
+            <input matInput type="number" formControlName="experience" />
+            <mat-error
+                *ngIf="subjectForm.get('experience')?.hasError('required')"
+            >
+                Experience is required
+            </mat-error>
+            <mat-error *ngIf="subjectForm.get('experience')?.hasError('min')">
+                Experience must be a positive number
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Subjects</mat-label>
+            <mat-select formControlName="subjects" multiple>
+                <mat-option
+                    *ngFor="let subject of subjects"
+                    [value]="subject._id"
+                >
+                    {{ subject.subjectName }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+
+    <div mat-dialog-actions>
+        <button mat-button (click)="onNoClick()">Cancel</button>
+        <button
+            mat-button
+            color="primary"
+            [disabled]="!subjectForm.valid"
+            (click)="onSaveClick()"
+        >
+            Save
+        </button>
+    </div>
+</form>

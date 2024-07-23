@@ -5,36 +5,36 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../../enviroments/environment';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class SubjectService {
-  private apiUrl = `${environment.apiUrl}/subjects`;
+    private apiUrl = `${environment.apiUrl}/subjects`;
 
-  constructor(private http: HttpClient) {}
+    constructor(private http: HttpClient) {}
 
-  getAllSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(this.apiUrl);
-  }
+    getAllSubjects(): Observable<Subject[]> {
+        return this.http.get<Subject[]>(this.apiUrl);
+    }
 
-  getSubjectById(id: string): Observable<Subject> {
-    return this.http.get<Subject>(`${this.apiUrl}/${id}`);
-  }
+    getSubjectById(id: string): Observable<Subject> {
+        return this.http.get<Subject>(`${this.apiUrl}/${id}`);
+    }
 
-  createSubject(subject: Subject): Observable<Subject> {
-    return this.http.post<Subject>(this.apiUrl, subject);
-  }
+    createSubject(subject: Subject): Observable<Subject> {
+        return this.http.post<Subject>(this.apiUrl, subject);
+    }
 
-  updateSubject(id: string, subject: Subject): Observable<Subject> {
-    return this.http.put<Subject>(`${this.apiUrl}/${id}`, subject);
-  }
+    updateSubject(id: string, subject: Subject): Observable<Subject> {
+        return this.http.put<Subject>(`${this.apiUrl}/${id}`, subject);
+    }
 
-  patchSubject(id: string, subject: Partial<Subject>): Observable<Subject> {
-    return this.http.patch<Subject>(`${this.apiUrl}/${id}`, subject);
-  }
+    patchSubject(id: string, subject: Partial<Subject>): Observable<Subject> {
+        return this.http.patch<Subject>(`${this.apiUrl}/${id}`, subject);
+    }
 
-  deleteSubject(id: string): Observable<string> {
-    return this.http
-      .delete<{ message: string }>(`${this.apiUrl}/${id}`)
-      .pipe(map((response) => response.message));
-  }
+    deleteSubject(id: string): Observable<string> {
+        return this.http
+            .delete<{ message: string }>(`${this.apiUrl}/${id}`)
+            .pipe(map((response) => response.message));
+    }
 }

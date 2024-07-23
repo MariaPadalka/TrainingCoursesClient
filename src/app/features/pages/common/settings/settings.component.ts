@@ -1,8 +1,8 @@
 import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    OnInit,
 } from '@angular/core';
 import { AuthService } from '../../../../core/services/auth/auth.service';
 import { RoleType } from '../../../../core/types/role.type';
@@ -16,40 +16,39 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PasswordFormComponent } from '../../../components/common/password-form/password-form.component';
 
 @Component({
-  selector: 'app-settings',
-  standalone: true,
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    PasswordFormComponent,
-    TeacherProfileComponent,
-    MatTabsModule,
-    AdminSettingsComponent,
-    MatProgressSpinnerModule,
-  ],
-  templateUrl: './settings.component.html',
-  styleUrls: [
-    './settings.component.scss',
-    '../../../components/main/main.component.scss',
-  ],
+    selector: 'app-settings',
+    standalone: true,
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        MatCardModule,
+        PasswordFormComponent,
+        TeacherProfileComponent,
+        MatTabsModule,
+        AdminSettingsComponent,
+        MatProgressSpinnerModule,
+    ],
+    templateUrl: './settings.component.html',
+    styleUrls: [
+        './settings.component.scss',
+        '../../../components/main/main.component.scss',
+    ],
 })
 export class SettingsComponent implements OnInit, AfterViewInit {
-  userRole!: RoleType | undefined;
-  isLoading = true;
+    userRole!: RoleType | undefined;
+    isLoading = true;
 
-  constructor(
-    private authService: AuthService,
-    private cdr: ChangeDetectorRef
-  ) {}
+    constructor(
+        private authService: AuthService,
+        private cdr: ChangeDetectorRef
+    ) {}
 
-  ngOnInit(): void {
-    this.userRole = this.authService.getUser()?.role;
-    console.log(this.userRole);
-  }
+    ngOnInit(): void {
+        this.userRole = this.authService.getUser()?.role;
+    }
 
-  ngAfterViewInit(): void {
-    this.isLoading = false;
-    this.cdr.detectChanges();
-  }
+    ngAfterViewInit(): void {
+        this.isLoading = false;
+        this.cdr.detectChanges();
+    }
 }
