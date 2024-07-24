@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../../enviroments/environment';
+import { environment } from '../../../../environments/environment';
 import { Teacher } from '../../models/teacher.model';
 import { map } from 'rxjs/operators';
 import { TeacherPopulated } from '../../models/populated/teacher-populated';

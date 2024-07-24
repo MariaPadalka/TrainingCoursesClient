@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject, map } from 'rxjs';
-import { environment } from '../../../../enviroments/environment';
+import { environment } from '../../../../environments/environment';
 import { User } from '../../models/user.model';
 import { RoleType } from '../../types/role.type';
 
