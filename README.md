@@ -24,9 +24,8 @@ https://github.com/user-attachments/assets/2881a557-78d4-468d-9460-4d4140d75f22
 
 
 - **Administrator**:
-  - Manage teachers, subjects, views and groups.
+  - Manage admins, teachers, subjects, views and groups.
   - Add and update entities.
-  - Configure protected routing based on roles.
  
 https://github.com/user-attachments/assets/a0224f2e-1670-49c3-988a-394f56b569ef
 
