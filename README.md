@@ -38,7 +38,12 @@ The application is designed to be responsive and provides a good user experience
 
 https://github.com/user-attachments/assets/189133cb-1a0a-4f87-830f-d41af1dc5f55
 
+## Prerequisites
 
+Before you start, ensure you have the following installed:
+
+- Node.js (min version 18.19)
+- npm or yarn
 
 ## Setup
 
