@@ -1,0 +1,151 @@
+<mat-toolbar color="primary" class="header-toolbar">
+    <button
+        fxHide.gt-sm
+        mat-icon-button
+        (click)="sidenav.toggle()"
+        class="hamburger-button"
+    >
+        <mat-icon>menu</mat-icon>
+    </button>
+    <span class="title" *ngIf="!user">Course management system</span>
+    <span class="title" *ngIf="user">Welcome, {{ user.email }}</span>
+    <span class="spacer"></span>
+    <nav class="nav-buttons" fxHide.lt-md>
+        <button
+            *ngIf="user?.role === 'admin'"
+            mat-button
+            routerLink="/teachers"
+        >
+            Teachers
+            <mat-icon>school</mat-icon>
+        </button>
+
+        <button *ngIf="user?.role === 'admin'" mat-button routerLink="/groups">
+            Groups
+            <mat-icon>group</mat-icon>
+        </button>
+
+        <button
+            *ngIf="user?.role === 'admin'"
+            mat-button
+            routerLink="/subjects"
+        >
+            Subjects
+            <mat-icon>subject</mat-icon>
+        </button>
+
+        <button mat-button routerLink="/">
+            {{ user?.role === 'admin' ? 'Loads' : 'Home' }}
+            <mat-icon>{{
+                user?.role === 'admin' ? 'wysiwyg' : 'home'
+            }}</mat-icon>
+        </button>
+
+        <button mat-button routerLink="/login" *ngIf="!user">
+            Login
+            <mat-icon>login</mat-icon>
+        </button>
+        <button mat-button routerLink="/settings" *ngIf="user">
+            Settings<mat-icon>settings</mat-icon>
+        </button>
+        <button mat-button (click)="openConfirmationDialog()" *ngIf="user">
+            Logout
+            <mat-icon>logout</mat-icon>
+        </button>
+    </nav>
+</mat-toolbar>
+
+<mat-sidenav-container class="sidenav-container" fxFlexFill>
+    <mat-sidenav
+        #sidenav
+        mode="over"
+        class="sidenav"
+        fxLayout="column"
+        fxHide.gt-sm
+    >
+        <nav fxLayout="column">
+            <button
+                *ngIf="user?.role === 'admin'"
+                mat-button
+                routerLink="/teachers"
+                (click)="sidenav.close()"
+            >
+                Teachers
+                <mat-icon>school</mat-icon>
+            </button>
+
+            <button
+                *ngIf="user?.role === 'admin'"
+                mat-button
+                routerLink="/groups"
+                (click)="sidenav.close()"
+            >
+                Groups
+                <mat-icon>group</mat-icon>
+            </button>
+
+            <button
+                *ngIf="user?.role === 'admin'"
+                mat-button
+                routerLink="/subjects"
+                (click)="sidenav.close()"
+            >
+                Subjects
+                <mat-icon>subject</mat-icon>
+            </button>
+
+            <button
+                *ngIf="user?.role === 'admin'"
+                mat-button
+                routerLink="/"
+                (click)="sidenav.close()"
+            >
+                Loads
+                <mat-icon>wysiwyg</mat-icon>
+            </button>
+
+            <button
+                mat-button
+                routerLink="/"
+                *ngIf="user?.role === 'teacher'"
+                (click)="sidenav.close()"
+            >
+                Home
+                <mat-icon>home</mat-icon>
+            </button>
+
+            <button
+                mat-button
+                routerLink="/login"
+                *ngIf="!user"
+                (click)="sidenav.close()"
+            >
+                Login
+                <mat-icon>login</mat-icon>
+            </button>
+            <button
+                mat-button
+                routerLink="/settings"
+                *ngIf="user"
+                (click)="sidenav.close()"
+            >
+                Settings<mat-icon>settings</mat-icon>
+            </button>
+            <button
+                mat-button
+                (click)="openConfirmationDialog(); sidenav.close()"
+                *ngIf="user"
+            >
+                Logout
+                <mat-icon>logout</mat-icon>
+            </button>
+        </nav>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <main>
+            <div class="content">
+                <router-outlet></router-outlet>
+            </div>
+        </main>
+    </mat-sidenav-content>
+</mat-sidenav-container>

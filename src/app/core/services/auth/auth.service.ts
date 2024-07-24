@@ -1,109 +1,112 @@
-// import { Injectable } from '@angular/core';
-// import { HttpClient } from '@angular/common/http';
-// import { Observable } from 'rxjs';
-// import { environment } from '../../../../enviroments/environment'; // Ensure this path is correct
-
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class AuthService {
-//   private apiUrl = environment.apiUrl;
-//   private tokenKey = 'accsess-token';
-//   private userKey = 'current_user';
-
-//   constructor(private http: HttpClient) {}
-
-//   login(email: string, password: string): Observable<any> {
-//     return this.http.post(`${this.apiUrl}/auth/login`, { email, password });
-//   }
-
-//   saveToken(token: string): void {
-//     localStorage.setItem(this.tokenKey, token); // Store token in localStorage
-//   }
-
-//   getToken(): string | null {
-//     return localStorage.getItem(this.tokenKey); // Retrieve token from localStorage
-//   }
-
-//   saveUser(user: any): void {
-//     localStorage.setItem(this.userKey, JSON.stringify(user));
-//   }
-
-//   getUser(): any {
-//     const user = localStorage.getItem(this.userKey);
-//     return user ? JSON.parse(user) : null;
-//   }
-
-//   getUserRole(): string {
-//     return this.getUser()?.role;
-//   }
-
-//   isLoggedIn(): boolean {
-//     return !!this.getToken(); // Check if token exists
-//   }
-
-//   logout(): void {
-//     localStorage.removeItem(this.tokenKey);
-//     localStorage.removeItem(this.userKey); // Remove token from localStorage on logout
-//   }
-// }
-
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { environment } from '../../../../enviroments/environment';
+import { Observable, BehaviorSubject, map } from 'rxjs';
+import { environment } from '../../../../environments/environment';
+import { User } from '../../models/user.model';
+import { RoleType } from '../../types/role.type';
+
+interface AuthResponse {
+    accessToken: string;
+    role: RoleType;
+}
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = environment.apiUrl;
-  private tokenKey = 'access-token';
-  private userKey = 'current_user';
+    private apiUrl = environment.apiUrl;
+    private basePath = 'auth';
+    private tokenKey = 'access-token';
+    private userKey = 'user';
 
-  private userSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-  public user$: Observable<any> = this.userSubject.asObservable();
+    private userSubject: BehaviorSubject<User | null> =
+        new BehaviorSubject<User | null>(null);
+    public user$: Observable<User | null> = this.userSubject.asObservable();
 
-  constructor(private http: HttpClient) {
-    const savedUser = this.getUser();
-    if (savedUser) {
-      this.userSubject.next(savedUser);
+    constructor(private http: HttpClient) {
+        const savedUser = this.getUser();
+        if (savedUser) {
+            this.userSubject.next(savedUser);
+        }
     }
-  }
 
-  login(email: string, password: string): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/login`, { email, password });
-  }
+    login(email: string, password: string): Observable<AuthResponse> {
+        return this.http.post<AuthResponse>(
+            `${this.apiUrl}/${this.basePath}/login`,
+            {
+                email,
+                password,
+            },
+            {
+                withCredentials: true,
+            }
+        );
+    }
 
-  saveToken(token: string): void {
-    localStorage.setItem(this.tokenKey, token);
-  }
+    refreshToken(): Observable<string> {
+        return this.http
+            .post<{ accessToken: string }>(
+                `${this.apiUrl}/${this.basePath}/refresh`,
+                {},
+                {
+                    withCredentials: true,
+                }
+            )
+            .pipe(
+                map((response: { accessToken: string }) => response.accessToken)
+            );
+    }
 
-  getToken(): string | null {
-    return localStorage.getItem(this.tokenKey);
-  }
+    saveToken(token: string): void {
+        localStorage.setItem(this.tokenKey, token);
+    }
 
-  saveUser(user: any): void {
-    localStorage.setItem(this.userKey, JSON.stringify(user));
-    this.userSubject.next(user); // Update user subject
-  }
+    getToken(): string | null {
+        return localStorage.getItem(this.tokenKey);
+    }
 
-  getUser(): any {
-    const user = localStorage.getItem(this.userKey);
-    return user ? JSON.parse(user) : null;
-  }
+    saveUser(user: User): void {
+        localStorage.setItem(this.userKey, JSON.stringify(user));
+        this.userSubject.next(user);
+    }
 
-  getUserRole(): string {
-    return this.getUser()?.role;
-  }
+    getUser(): User | null {
+        const user = localStorage.getItem(this.userKey);
+        return user ? JSON.parse(user) : null;
+    }
 
-  isLoggedIn(): boolean {
-    return !!this.getToken();
-  }
+    isLoggedIn(): boolean {
+        return !!this.getToken();
+    }
 
-  logout(): void {
-    localStorage.removeItem(this.tokenKey);
-    localStorage.removeItem(this.userKey);
-    this.userSubject.next(null);
-  }
+    accessAllowed(role: RoleType) {
+        return this.getUser()?.role === role;
+    }
+
+    changePassword(
+        oldPassword: string,
+        newPassword: string
+    ): Observable<string> {
+        return this.http
+            .post<{
+                message: string;
+            }>(`${this.apiUrl}/${this.basePath}/change-password`, {
+                oldPassword,
+                newPassword,
+            })
+            .pipe(map((response) => response.message));
+    }
+
+    logout(): void {
+        localStorage.removeItem(this.tokenKey);
+        localStorage.removeItem(this.userKey);
+        this.userSubject.next(null);
+        this.http.post<{ accessToken: string }>(
+            `${this.apiUrl}/${this.basePath}/logout`,
+            {},
+            {
+                withCredentials: true,
+            }
+        );
+    }
 }

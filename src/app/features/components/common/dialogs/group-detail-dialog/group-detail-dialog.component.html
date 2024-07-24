@@ -1,0 +1,9 @@
+<h1 mat-dialog-title>Group Details</h1>
+<div mat-dialog-content class="mat-typography">
+    <p><strong>Specialty:</strong> {{ data.specialty }}</p>
+    <p><strong>Department:</strong> {{ data.department }}</p>
+    <p><strong>Student Count:</strong> {{ data.studentCount }}</p>
+</div>
+<div mat-dialog-actions>
+    <button mat-button (click)="onClose()">Close</button>
+</div>

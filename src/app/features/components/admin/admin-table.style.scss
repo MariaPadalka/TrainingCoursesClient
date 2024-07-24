@@ -1,0 +1,32 @@
+.full-width {
+    width: 100%;
+}
+.flex-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 3px;
+    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 768px) {
+    table {
+        padding: 5px;
+
+        .action-btn {
+            max-height: 45px;
+            max-width: 45px;
+            margin-right: auto;
+        }
+
+        .bigger-height {
+            min-height: 35px;
+            display: flex;
+            font-size: larger;
+            align-items: flex-end;
+        }
+        .bigger-height:before {
+            min-height: 30px;
+        }
+    }
+}

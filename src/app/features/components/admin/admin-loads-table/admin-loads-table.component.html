@@ -1,0 +1,167 @@
+<div class="component-container">
+    <div class="spinner-container" *ngIf="isLoading">
+        <mat-progress-spinner
+            mode="indeterminate"
+            color="primary"
+        ></mat-progress-spinner>
+    </div>
+    <div class="table-container" [ngClass]="{ hidden: isLoading }">
+        <mat-form-field class="full-width">
+            <mat-label>
+                <mat-icon>search</mat-icon>
+                Search
+            </mat-label>
+            <input
+                matInput
+                (keyup)="applyFilter($event)"
+                placeholder="Search"
+            />
+        </mat-form-field>
+
+        <div class="flex-container">
+            <h2>Table of loads</h2>
+
+            <button
+                mat-raised-button
+                color="primary"
+                (click)="openLoadDialog()"
+            >
+                Add New Load
+            </button>
+        </div>
+        <ng-container *ngIf="this.dataSource.filteredData.length === 0">
+            <p>No records found.</p>
+        </ng-container>
+
+        <table
+            mat-table
+            [dataSource]="dataSource"
+            matSort
+            class="mat-elevation-z8"
+        >
+            <!-- Subject Column -->
+            <ng-container matColumnDef="teacherName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Teacher
+                </th>
+                <td data-label="Teacher" mat-cell *matCellDef="let element">
+                    <span
+                        (click)="openTeacherDetailDialog(element.teacher._id)"
+                        class="link-text"
+                    >
+                        {{ element.teacherName }}
+                    </span>
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="subjectName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Subject
+                </th>
+                <td data-label="Subject" mat-cell *matCellDef="let element">
+                    <span
+                        class="link-text"
+                        (click)="openSubjectDetailDialog(element.subject)"
+                    >
+                        {{ element.subjectName }}
+                    </span>
+                </td>
+            </ng-container>
+
+            <!-- Group Specialty Column -->
+            <ng-container matColumnDef="groupName">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Group</th>
+                <td data-label="Group" mat-cell *matCellDef="let element">
+                    <span
+                        (click)="openGroupDetailDialog(element.group)"
+                        style="
+                            cursor: pointer;
+                            color: blue;
+                            text-decoration: underline;
+                        "
+                        >{{ element.groupName }}</span
+                    >
+                </td>
+            </ng-container>
+
+            <!-- Lesson Type Column -->
+            <ng-container matColumnDef="lessonType">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Lesson Type
+                </th>
+                <td data-label="LessonType" mat-cell *matCellDef="let element">
+                    {{ element.lessonType }}
+                </td>
+            </ng-container>
+
+            <!-- Hours Column -->
+            <ng-container matColumnDef="hours">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hours</th>
+                <td data-label="Hours" mat-cell *matCellDef="let element">
+                    {{ element.hours }}
+                </td>
+            </ng-container>
+
+            <!-- Payment Per Hour Column -->
+            <ng-container matColumnDef="paymentPerHour">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Payment Per Hour
+                </th>
+                <td
+                    data-label="HourlyPayment"
+                    mat-cell
+                    *matCellDef="let element"
+                >
+                    {{ element.paymentPerHour }}
+                </td>
+            </ng-container>
+
+            <!-- Total Payment Column -->
+            <ng-container matColumnDef="totalPayment">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Total Payment
+                </th>
+                <td
+                    data-label="TotalPayment"
+                    mat-cell
+                    *matCellDef="let element"
+                >
+                    {{ element.totalPayment }}
+                </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef>Actions</th>
+                <td
+                    class="bigger-height"
+                    data-label="Actions"
+                    mat-cell
+                    *matCellDef="let load"
+                >
+                    <button
+                        class="action-btn"
+                        mat-icon-button
+                        (click)="openLoadDialog(load)"
+                    >
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button
+                        class="action-btn"
+                        mat-icon-button
+                        (click)="openDeleteDialog(load._id)"
+                    >
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr
+                class="not-for-mobile"
+                mat-header-row
+                *matHeaderRowDef="displayedColumns"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25]"></mat-paginator>
+    </div>
+</div>

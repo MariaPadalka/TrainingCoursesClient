@@ -1,0 +1,23 @@
+<div class="page-container">
+    <mat-card>
+        <mat-tab-group *ngIf="!isLoading">
+            <ng-container *ngIf="userRole === 'admin'">
+                <mat-tab label="Admin Settings">
+                    <app-admin-settings></app-admin-settings>
+                </mat-tab>
+            </ng-container>
+            <ng-container *ngIf="userRole === 'teacher'">
+                <mat-tab label="Profile">
+                    <app-teacher-profile></app-teacher-profile>
+                </mat-tab>
+            </ng-container>
+
+            <mat-tab label="Change password">
+                <mat-card-content>
+                    <app-password-form></app-password-form> </mat-card-content
+            ></mat-tab>
+            >
+        </mat-tab-group>
+    </mat-card>
+    <!-- </div> -->
+</div>
